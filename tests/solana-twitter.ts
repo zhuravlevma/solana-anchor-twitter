@@ -6,7 +6,7 @@ import * as bs58 from "bs58";
 
 describe("solana-twitter", () => {
   // Configure the client to use the local cluster.
-  const provider = anchor.AnchorProvider.env();
+  const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
   anchor.setProvider(provider);
 
   const program = anchor.workspace.SolanaTwitter as Program<SolanaTwitter>;
