@@ -1,16 +1,16 @@
 <script setup>
 import { ref, watchEffect } from "vue";
-import { fetchTweets } from "@/api";
+import { fetchTweets, authorFilter } from "@/api";
 import TweetForm from "@/components/TweetForm";
 import TweetList from "@/components/TweetList";
 import { useAnchorWallet } from "solana-wallets-vue";
 
 const tweets = ref([]);
 const loading = ref(true);
-// const { wallet } = useWorkspace();
 
 watchEffect(() => {
-  fetchTweets()
+  if (!useAnchorWallet().value) return;
+  fetchTweets([authorFilter(useAnchorWallet().value.publicKey.toBase58())])
     .then((fetchedTweets) => (tweets.value = fetchedTweets))
     .finally(() => (loading.value = false));
 });
