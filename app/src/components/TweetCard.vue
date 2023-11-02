@@ -1,24 +1,23 @@
 <script setup>
 import { toRefs, computed } from "vue";
-import { useWorkspace } from "@/composables";
+import { useAnchorWallet } from "solana-wallets-vue";
 const props = defineProps({
   tweet: Object,
 });
 
 const { tweet } = toRefs(props);
 
-const { wallet } = useWorkspace();
-console.log(tweet.value);
 const authorRoute = computed(() => {
+  console.log(useAnchorWallet().value.publicKey);
   if (
-    wallet.value &&
-    wallet.value.publicKey.toBase58() === tweet.value.publicKey.toBase58()
+    useAnchorWallet().value.publicKey.toBase58() ===
+    tweet.value.publicKey.toBase58()
   ) {
     return { name: "Profile" };
   } else {
     return {
       name: "Users",
-      params: { author: tweet.value.publicKey.toBase58() },
+      params: { author: tweet.value.author.toBase58() },
     };
   }
 });
